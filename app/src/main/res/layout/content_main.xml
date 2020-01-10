@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/swipeRefreshLayout"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	app:layout_behavior="@string/appbar_scrolling_view_behavior"
+	tools:context="com.journaldev.navigationviewexpandablelistview.MainActivity"
+	tools:showIn="@layout/app_bar_main">
+	
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical">
+		
+		<ProgressBar
+			android:id="@+id/ProgressBar"
+			style="?android:attr/progressBarStyleHorizontal"
+			android:layout_width="match_parent"
+			android:layout_height="9dp"
+			android:layout_marginTop="-2dp"
+			android:progress="20"
+			android:visibility="gone" />
+		
+		<WebView
+			android:id="@+id/webView"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintLeft_toLeftOf="parent"
+			app:layout_constraintRight_toRightOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+		
+		<RelativeLayout
+			android:id="@+id/relativeLayout"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+			
+			<ImageView
+				android:id="@+id/noConnectionLogo"
+				android:layout_width="240dp"
+				android:layout_height="240dp"
+				android:layout_centerHorizontal="true"
+				android:src="@drawable/nointernet1"
+				
+				/>
+			
+			<TextView
+				android:id="@+id/txtNoconnection"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/noConnectionLogo"
+				android:text="No Internet Connection"
+				android:textAlignment="center"
+				android:textSize="26sp" />
+			
+			<Button
+				android:id="@+id/btnNoConnection"
+				android:layout_width="140dp"
+				android:layout_height="55dp"
+				android:layout_below="@id/txtNoconnection"
+				android:layout_centerHorizontal="true"
+				android:layout_marginTop="60dp"
+				android:background="@color/colorAccent"
+				android:text="Retry"
+				android:textColor="#FFF"
+				android:textSize="22sp" />
+		</RelativeLayout>
+	</LinearLayout>
+
+</android.support.v4.widget.SwipeRefreshLayout>
