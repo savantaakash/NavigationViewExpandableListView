@@ -1,12 +1,14 @@
 package com.journaldev.navigationviewexpandablelistview;
 
 import android.app.AlertDialog;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -23,8 +25,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -32,6 +36,7 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,6 +67,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         webView = findViewById(R.id.webView);
+
         progressBarWeb = findViewById(R.id.ProgressBar);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading Please Wait...");
@@ -79,11 +85,35 @@ public class MainActivity extends AppCompatActivity
                 webView.reload();
             }
         });
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setBuiltInZoomControls(true);
-        webView.getSettings().setUseWideViewPort(true);
-        webView.getSettings().setLoadsImagesAutomatically(true);
-        checkConnection();
+
+
+        if (savedInstanceState != null) {
+            webView.restoreState(savedInstanceState);
+        } else {
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.getSettings().setLoadsImagesAutomatically(true);
+            webView.getSettings().setLoadWithOverviewMode(true);
+            webView.getSettings().setUseWideViewPort(true);
+            webView.getSettings().setDomStorageEnabled(true);
+            webView.getSettings().setBuiltInZoomControls(true);
+            checkConnection();
+
+        }
+
+
+        //solved Swipeup Problem
+
+        webView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                if (webView.getScrollY() == 0) {
+                    swipeRefreshLayout.setEnabled(true);
+                } else {
+                    swipeRefreshLayout.setEnabled(false);
+                }
+            }
+        });
+
         webView.setWebViewClient(new WebViewClient() {
 
 
@@ -92,7 +122,8 @@ public class MainActivity extends AppCompatActivity
 
                 view.scrollTo(0, 0);
 
-                swipeRefreshLayout.setRefreshing(true);
+
+                swipeRefreshLayout.setRefreshing(false);
                 super.onPageFinished(view, url);
             }
 
@@ -120,6 +151,21 @@ public class MainActivity extends AppCompatActivity
                 super.onProgressChanged(view, newProgress);
             }
         });
+        webView.setDownloadListener(new DownloadListener() {
+            @Override
+            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+                DownloadManager.Request myRequest = new DownloadManager.Request(Uri.parse(url));
+                myRequest.allowScanningByMediaScanner();
+                myRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                DownloadManager mymanager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+                mymanager.enqueue(myRequest);
+
+                Toast.makeText(MainActivity.this, "Your file is Downloading....", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
         btnNoInternetConnection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -150,6 +196,7 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -245,6 +292,13 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        webView.saveState(outState);
+
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -372,7 +426,7 @@ public class MainActivity extends AppCompatActivity
             childList.put(menuModel, childModelsList);
         }
         childModelsList = new ArrayList<>();
-        menuModel = new MenuModel("COMMITTES", true, true, ""); //Menu of ACCADEMICS
+        menuModel = new MenuModel("COMMITTEES", true, true, ""); //Menu of Commitees
         headerList.add(menuModel);
         childModel = new MenuModel("STATUATORY COMMITTES", false, true, "");
         childModelsList.add(childModel);
@@ -459,10 +513,10 @@ public class MainActivity extends AppCompatActivity
         }
 
         childModelsList = new ArrayList<>();
-        menuModel = new MenuModel("Infotainment", true, true, ""); //Menu of infotainment
+        menuModel = new MenuModel("Infotainment", true, true, ""); //Menu of Infotainment
         headerList.add(menuModel);
 
-        childModel = new MenuModel("Videous", true, false, "https://www.youtube.com/channel/UCJ7cn5h3cXoBcnruYQLtfxw/playlists");
+        childModel = new MenuModel("Videos", true, false, "https://www.youtube.com/channel/UCJ7cn5h3cXoBcnruYQLtfxw/playlists");
         childModelsList.add(childModel);
 
 

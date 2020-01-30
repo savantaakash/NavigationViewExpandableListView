@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "207616629990",
+    "firebase_url": "https://mitmysore.firebaseio.com",
+    "project_id": "mitmysore",
+    "storage_bucket": "mitmysore.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:207616629990:android:5261c17846fbd66e1d2f27",
+        "android_client_info": {
+          "package_name": "com.journaldev.navigationviewexpandablelistview"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "207616629990-t0kjv7g4m20i4r8eb2h3564emg0iea0n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.journaldev.navigationviewexpandablelistview",
+            "certificate_hash": "468f2adae0c125318d3067e024684dd588c4df1e"
+          }
+        },
+        {
+          "client_id": "207616629990-r63ki387k4jalpo50be10sec5h7una4v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5eW1zijGE80hpGDPD0SoASz3afcrro04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "207616629990-r63ki387k4jalpo50be10sec5h7una4v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
